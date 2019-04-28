@@ -1,0 +1,49 @@
+var dialog = new SaveFileDialog();
+                dialog.Title = "请选择文件路径";
+                dialog.Filter = "文本文件(*.docx)|*.docx";
+                if (dialog.ShowDialog() == DialogResult.Cancel)
+                    return;
+                File.Copy(ConfigurationManager.Instance.AppSettings.AppSetting<String>("ReportTemplatePath"), dialog.FileName);
+                using (var doc = Configuration.Factory.Open(dialog.FileName))
+                    doc.Process(new
+                    {
+                        姓名 = Name,
+                        性别 = Sex,
+                        年龄 = Age,
+                        送检医院 = Hospital,
+                        送检医生 = Doctor,
+                        标本编号 = CurrentSlide.Summary.Name,
+                        联系方式 = Phone,
+                        联系地址 = Address,
+                        单核数量 = CurrentStatistics.TotalCounts[CellClassType.Monocyte],
+                        单核百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Monocyte] * 100, 2) + "%",
+                        单核总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Monocyte] * 100, 2) + "%",
+                        淋巴数量 = CurrentStatistics.TotalCounts[CellClassType.Lymphocyte],
+                        淋巴百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Lymphocyte] * 100, 2) + "%",
+                        淋巴总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Lymphocyte] * 100, 2) + "%",
+                        嗜酸数量 = CurrentStatistics.TotalCounts[CellClassType.Eosinophil],
+                        嗜酸百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Eosinophil] * 100, 2) + "%",
+                        嗜酸总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Eosinophil] * 100, 2) + "%",
+                        嗜碱数量 = CurrentStatistics.TotalCounts[CellClassType.Basophil],
+                        嗜碱百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Basophil] * 100, 2) + "%",
+                        嗜碱总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Basophil] * 100, 2) + "%",
+                        中性杆数量 = CurrentStatistics.TotalCounts[CellClassType.BandedNeutrophil],
+                        中性杆百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.BandedNeutrophil] * 100, 2) + "%",
+                        中性总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Neutrophil] * 100, 2) + "%",
+                        中性分数量 = CurrentStatistics.TotalCounts[CellClassType.SegmentedNeutrophil],
+                        中性分百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.SegmentedNeutrophil] * 100, 2) + "%",
+                        异常数量 = CurrentStatistics.TotalCounts[CellClassType.Abnormal],
+                        异常百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Abnormal] * 100, 2) + "%",
+                        异常总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.Abnormal] * 100, 2) + "%",
+                        其它数量 = CurrentStatistics.TotalCounts[CellClassType.OtherCell],
+                        其它百分比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.OtherCell] * 100, 2) + "%",
+                        其它总比 = Math.Round(CurrentStatistics.TotalPercentages[CellClassType.OtherCell] * 100, 2) + "%",
+                        日期 = DateTime.Now.ToString("d").Replace("/", "-")
+
+            });
+                System.Diagnostics.Process.Start(dialog.FileName);
+            }
+            catch
+            {
+                System.Windows.MessageBox.Show("导出失败,请检查模板路径");
+            }
