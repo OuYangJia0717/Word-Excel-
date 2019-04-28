@@ -1,0 +1,21 @@
+public static void Copy()
+            {
+                SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
+                var R = ExcelFile.Load(@"D:\新建文件夹\1.xlsx");
+
+                var W = new ExcelFile();
+
+                foreach (var worksheet in R.Worksheets)
+                {
+                    var ws = W.Worksheets.Add(worksheet.Name);
+                    foreach (var row in worksheet.Rows)
+                    {
+                        foreach (var cell in row.AllocatedCells)
+                        {
+                            ws.Cells[cell.Name].Value = cell.Value;
+                        }
+                    }
+                }
+                W.Save(@"D:\新建文件夹\copy.xlsx");
+            }
