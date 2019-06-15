@@ -1,0 +1,9 @@
+Document pdf = new Document(reportpath);//文本对象
+                    pdf.Save(pdfpath);
+
+                    ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+                    options.Resolution = 300;
+                    options.PrettyFormat = true;
+                    options.UseAntiAliasing = true;
+                    //导出图片
+                    pdf.Save(pecturepath, options);
